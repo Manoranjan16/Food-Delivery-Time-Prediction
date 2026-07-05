@@ -3,10 +3,8 @@ import streamlit as st
 import pandas as pd
 
 #Model Load
-model = joblib.load("delivery_time_model.pkl")
-encoded = joblib.load('data_encoding.pkl')
-features = joblib.load('fetures_name.pkl')
-scale = joblib.load('Scaled.pkl')
+pipeline = joblib.load("pipeline.pkl")
+
 
 st.set_page_config(page_title='Food Delivery Time Prediction')
 st.title('Food Delivery Time Preidction')
@@ -46,26 +44,27 @@ input_df = pd.DataFrame({
     'Courier_Experience_yrs': [experience]
 })
 
-#Convert to encoding (dummy variable)
-input_df = pd.get_dummies(input_df)
-
-#add missing columns
-for col in features:
-    if col not in input_df.columns:
-        input_df[col] = 0
-
-#Arrange columns in training order
-input_df = input_df[features]
-
 #prediction
 if st.button("🚀 Predict Delivery Time", use_container_width=True):
-    prediction = model.predict(input_df)
+    prediction = pipeline.predict(input_df)
 
-    st.success(f"Estimated Delivery Time : {prediction[0]:.2f} minutes")
+    st.metric(
+    label="Estimated Delivery Time",
+    value=f"{prediction[0]:.2f} min"
+)
 
 #Summary
+display_summary = pd.DataFrame({
+    'Distance_km': [distance],
+    'Weather': [weather],
+    'Traffic_Level': [traffic],
+    'Time_of_Day': [time],
+    'Vehicle_Type': [vehicle],
+    'Preparation_Time_min': [preparation],
+    'Courier_Experience_yrs': [experience]
+}, index=[1])
 st.subheader("Input Summary")
-st.dataframe(input_df)
+st.dataframe(display_summary)
 
 # st.sidebar.subheader("Model Performance")
 # st.sidebar.metric("R² Score", "0.83")
