@@ -120,7 +120,7 @@ streamlit run app.py
 
 ## 📸 Application Preview
 
-(Add screenshots of your Streamlit application here.)
+![alt text](image-1.png)
 
 ---
 
