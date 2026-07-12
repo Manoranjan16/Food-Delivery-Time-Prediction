@@ -120,7 +120,7 @@ streamlit run app.py
 
 ## 📸 Application Preview
 
-(Add screenshots of your Streamlit application here.)
+<img src="image-1.png" width="700">
 
 ---
 
